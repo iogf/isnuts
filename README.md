@@ -44,6 +44,9 @@ tester = Tester()
 # You could have more than one tests.py file which tests separately
 # parts of your code.
 import app
+
+# Call your function to run its tests.
+app.some_function(1, 2, 3)
 ~~~
 
 **app.py**
@@ -60,7 +63,10 @@ def some_function(value0, value1, ...)
 Now you have implemented your tests for your function, you can just
 start writing your code for the function and go checking if it passes your tests :)
 
-**app.py**
+So, you would end up your tests and your code living together
+whenever you wanted to factor out stuff you would know exactly
+what your tests are doing and you could rewrite your tests as long you 
+rewrite your function.
 
 ~~~python
 def some_function(value0, value1, ...)
