@@ -2,52 +2,138 @@
 
 A naive approach to test python code.
 
-The isnuts lib permits you to inject python code as inline commentaries
-for being executed later once the underlying application receives **--isnuts** argument.
+The isnuts lib permits you to inject python code as inline commentaries these
+will be executed before each one of the statements it preceds.
 
 It permit to test the application behavior in a flexible way and less prolix
 than writing tests in the standard approach.
 
-### Basic code
+### Basic example
 
-The following code uses python unittest module to test MyClass methods.
+First of all you implement a tests file which launches your application and imports
+the Tester class.
 
-~~~python
-import unittest
-from myclass import MyClass
+**tests.py**
 
-class TestMyClassMethods(unittest.TestCase):
-    def test_method0(self):
-        self.assertEqual(MyClass().method0('oo'), 1)
+~~~
+from nutslib import Tester
+tester = Tester()
 
-    def test_method1(self):
-        self.assertEqual(MyClass().method0('oo'), 3)
+# Initialize the application.
+import some_app
 
-if __name__ == '__main__':
-    unittest.main()
 ~~~
 
-Where the code for the application could be something like:
+
+Where you have:
+
+**some_app.py**
 
 ~~~python
 import nutslib
 
-class MyClass:
-    def method0(self, value):
-        return 1
-    def method1(self, value):
-        return 2
+def beta(value):
+    return 1
 
-def main():
-    x = MyClass()
-    print(x.method1('oo') + x.method0('oo'))
+def alpha(value):
+    # Testing beta from alpha..
+    #;print('The alpha function got:', value)
+    #;assert beta(1) == 1
+    #;assert beta(2) == 1
+    #;assert beta('ooo') == 1
+    n = beta(10) + 1
+    
+    # Justing checking n..
+    #;print('The value for n:', n)
+    return n
 
-if __name__ == '__main__':
-    main()
+alpha(10)
+
+
 ~~~
 
-With isnuts approach, the tests would be included in the myclass module
-and these would be merely commentaries.
+You want to test some_app.py then you run:
+
+~~~
+python tests.py
+~~~
+
+You'll get all statements that start with '#;' executed in the scope.
+
+~~~
+[tau@sigma basic_assert]$ python tests.py 
+The alpha function got: 10
+The value for n: 2
+
+~~~
+
+### Exceptions
+
+The following example shows how to make sure a function
+raises an exception.
+
+**tests.py**
+
+~~~python
+from nutslib import Tester
+tester = Tester()
+
+# Initialize the application.
+import some_app
+~~~
+
+**some_app.py**
+
+~~~python
+#;print('It will be printed when the module is loaded.')
+
+def beta(value):
+    return 1/value
+
+def alpha(value):
+    # This case it will throw an assertion error.
+    # Because beta function doesnt raise ZeroDivisionError at all.
+
+    #;try:
+    #;    beta(100)
+    #;except ZeroDivisionError:
+    #;    pass
+    #;else:
+    #;    raise Exception('Should throw ZeroDivisionError')
+    
+
+    return value 
+
+alpha(10)
+
+~~~
+
+You would get:
+
+
+~~~
+[tau@sigma fail_exc_assertion]$ python tests.py 
+It will be printed when the module is loaded.
+File:/home/tau/projects/isnuts-code/demo/fail_exc_assertion/some_app.py
+Line:18
+Exception:<class 'Exception'> ('Should throw ZeroDivisionError',)
+~~~
+
+
+This example shows how it would be with a class:
+
+**tests.py**
+
+~~~python
+from nutslib import Tester
+tester = Tester()
+
+# Initialize the application.
+import some_class
+some_class.main()
+~~~
+
+**some_class.py**
 
 ~~~python
 import nutslib
@@ -80,126 +166,15 @@ if __name__ == '__main__':
 
 ~~~
 
-Once running the above example with:
+You would get:
 
 ~~~
-[tau@sigma class_test]$ python some_class.py --isnuts
-File:some_class.py
+[tau@sigma class_test]$ python tests.py 
+File:/home/tau/projects/isnuts-code/demo/class_test/some_class.py
 Line:12
 Exception:<class 'AssertionError'> ()
 3
 
 ~~~
-
-The inline commentaries that start with #; before each statement get executed
-when the application is run with **--isnuts** argument.
-
-An example that tests if a method throws an exception would be:
-
-~~~python
-import nutslib
-
-def beta(value):
-    return 1/value
-
-def alpha(value):
-    # This case it will throw an assertion error.
-    # Because beta function doesnt raise ZeroDivisionError at all.
-
-    #;try:
-    #;    beta(100)
-    #;except ZeroDivisionError:
-    #;    pass
-    #;else:
-    #;    raise Exception('Should throw ZeroDivisionError')
-    
-
-    return value 
-
-alpha(10)
-
-~~~
-
-You would get:
-
-~~~
-[tau@sigma fail_exc_assertion]$ python some_app.py --isnuts
-File:some_app.py
-Line:18
-Exception:<class 'Exception'> ('Should throw ZeroDivisionError',)
-
-~~~
-
-The following example shows how isnuts behaves with imports.
-
-**some_app.py**
-
-~~~python
-import nutslib
-import mymodule
-
-def alpha(value):
-    #;assert value == 1 or value == 2
-    return value 
-
-# This test comment is not going to be 
-# called, it is in the main app.
-#;print('it will not be printed.')
-# Statements in the main module dont get traced unless
-# they are executed in function/class contexts.
-alpha(3)
-~~~
-
-Which imports...
-
-**mymodule.py**
-
-~~~python
-# It will be executed when some_def gets defined.
-#;print('In mymodule..')
-
-def some_def():
-    pass
-
-~~~
-
-Which would output:
-
-~~~
-[tau@sigma with_module]$ python some_app.py --isnuts
-In mymodule..
-File:/home/tau/projects/isnuts-code/demo/with_module/some_app.py
-Line:6
-Exception:<class 'AssertionError'> ()
-~~~
-
-Code commentaries get extracted from regions that are executed
-in the application. Once extracted these are executed in the frame.f_globals
-and frame.f_locals.
-
-This approach of implementing tests would improve the ability
-of others reading and understanding your code because the comment tests
-would give a clue about what you're doing. It as well would improve your prediction
-skills about how your code behaves with a given set of inputs.
-
-Notice that if your underlying application receives arguments it shouldn't have issues with the 
-**--isnuts** argument since isnuts automatically removes that argument from sys.argv
-when your application is executed.
-
-**Note:** It is in its early development stage, a lot can be done yet,
-looking for suggestions :)
-
-
-### Install
-
-~~~
-pip install isnuts
-~~~
-
-Then you're done.
-
-**Note:** Would run on python3 only.
-
-
 
 

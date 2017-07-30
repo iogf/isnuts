@@ -1,5 +1,3 @@
-import nutslib
-
 def beta(value):
     return 1
 
@@ -16,4 +14,5 @@ def alpha(value):
     return n
 
 alpha(10)
+
 

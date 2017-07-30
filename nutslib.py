@@ -1,28 +1,49 @@
-"""
-
-"""
-
+from os.path import abspath
 import linecache
 import sys
-import os
 
-class Parser:
+class Tester:
     """
-    Used to extract code comments.
+    Used to keep track of function calls and execute
+    code comments.
     """
+
+    def __init__(self):
+        sys.settrace(self.trace_calls)
+
+    def display_exception(self, frame, err):
+        print('File:', abspath(frame.f_globals.get('__file__')))
+        print('Line:', frame.f_lineno)
+        print('Exception:', err.__class__, err.args)
+
+    def exec_code(self, frame):
+        tests = self.get_tests(abspath(
+        frame.f_globals.get('__file__')), frame.f_lineno)
+
+        try:
+            exec(tests, frame.f_globals, frame.f_locals)
+        except Exception as err:
+            self.display_exception(frame, err)
+
+    def trace_calls(self, frame, event, arg):
+        if event == 'line': 
+            self.exec_code(frame)
+        return self.trace_calls
 
     def get_tests(self, filename, line):
         code = ''
+
         while True:
             line = line - 1
-            data = self.is_test(filename, line)
-            if not data:
+            data = self.get_code(filename, line)
+            if not data: 
                 return code
             code = '%s%s' % (data, code)
 
-    def is_test(self, filename, line):
+    def get_code(self, filename, line):
         data = linecache.getline(filename,  line)
         chks = data.split('#;')
+
         if len(chks) == 2:
             return chks[1]
         elif not data:
@@ -32,38 +53,4 @@ class Parser:
         elif data.strip().startswith('#'):
             return data
         return None
-
-class Tester:
-    """
-    Used to keep track of function calls and execute
-    code comments.
-    """
-
-    def __init__(self):
-        self.parser = Parser()
-        sys.settrace(self.trace_calls)
-
-    def exec_code(self, frame):
-        filename = os.path.abspath(frame.f_globals.get('__file__'))
-        tests = self.parser.get_tests(filename, frame.f_lineno)
-
-        try:
-            exec(tests, frame.f_globals, frame.f_locals)
-        except Exception as err:
-            print('File:%s\nLine:%s\nException:%s %s' % (
-                filename, frame.f_lineno, 
-                    err.__class__, err.args))
-
-    def trace_calls(self, frame, event, arg):
-        if event == 'line': 
-            self.exec_code(frame)
-        return self.trace_calls
-
-if __name__ != '__main__':
-    try:
-        sys.argv.remove('--isnuts')
-    except ValueError:
-        pass
-    else:
-        tester = Tester()
 

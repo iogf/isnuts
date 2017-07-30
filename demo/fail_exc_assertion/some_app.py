@@ -1,4 +1,4 @@
-import nutslib
+#;print('It will be printed when the module is loaded.')
 
 def beta(value):
     return 1/value
@@ -18,6 +18,7 @@ def alpha(value):
     return value 
 
 alpha(10)
+
 
 
 
