@@ -19,7 +19,7 @@ application using isnuts lib.
 
 One of the advantages of isnuts is: if you have to refactor functions or rename them you can just 
 quickly change the function tests while you change the function! It would speed up development
-yet making your more readable since the comments(which are merely python code) would help others
+yet making your code more readable since the comments(which are merely python code) would help others
 to understand what you're doing.
 
 Other advantage of this approach consists of the fact of you having access to the function's scope
