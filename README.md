@@ -204,6 +204,16 @@ skills about how your code behaves with a given set of inputs.
 looking for suggestions :)
 
 
+### Install
+
+~~~
+pip install isnuts
+~~~
+
+Then you're done.
+
+**Note:** Would run on python3 only.
+
 
 
 
