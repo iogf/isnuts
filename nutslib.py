@@ -4,10 +4,13 @@
 
 import linecache
 import sys
+import os
 
 class Parser:
     """
+    Used to extract code comments.
     """
+
     def get_tests(self, filename, line):
         code = ''
         while True:
@@ -31,13 +34,17 @@ class Parser:
         return None
 
 class Tester:
+    """
+    Used to keep track of function calls and execute
+    code comments.
+    """
+
     def __init__(self):
         self.parser = Parser()
         sys.settrace(self.trace_calls)
 
     def exec_code(self, frame):
-        filename = frame.f_globals.get('__file__', 
-        frame.f_globals.get('__name__'))
+        filename = os.path.abspath(frame.f_globals.get('__file__'))
         tests = self.parser.get_tests(filename, frame.f_lineno)
 
         try:
@@ -50,6 +57,7 @@ class Tester:
     def trace_lines(self, frame, event, arg):
         if event == 'line': 
             self.exec_code(frame)
+        return self.trace_lines
 
     def trace_calls(self, frame, event, arg):
         return self.trace_lines

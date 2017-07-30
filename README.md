@@ -142,13 +142,12 @@ def alpha(value):
     #;assert value == 1 or value == 2
     return value 
 
-alpha(1)
-
-# Calling the function beta in mymodule
-# will run its local tests.
-mymodule.beta()
-
-
+# This test comment is not going to be 
+# called, it is in the main app.
+#;print('it will not be printed.')
+# Statements in the main module dont get traced unless
+# they are executed in function/class contexts.
+alpha(3)
 ~~~
 
 Which imports...
@@ -156,22 +155,10 @@ Which imports...
 **mymodule.py**
 
 ~~~python
-# It will be executed when the module is loaded.
+# It will be executed when some_def gets defined.
 #;print('In mymodule..')
 
-def gamma(value):
-    return value + 1
-
-# Testing gamma here..
-#;print('It will be printed when beta is called.')
-#;assert gamma(10) == 12
-
-# When the function beta gets called, isnuts lib
-# collects all test commentaries upwards.
-
-def beta():
-    # Will not pass in the tests.
-    #;assert gamma(10) == 12
+def some_def():
     pass
 
 ~~~
@@ -181,14 +168,9 @@ Which would output:
 ~~~
 [tau@sigma with_module]$ python some_app.py --isnuts
 In mymodule..
-It will be printed when beta is called.
-File:/home/tau/projects/isnuts-code/demo/with_module/mymodule.py
-Line:14
+File:/home/tau/projects/isnuts-code/demo/with_module/some_app.py
+Line:6
 Exception:<class 'AssertionError'> ()
-File:/home/tau/projects/isnuts-code/demo/with_module/mymodule.py
-Line:17
-Exception:<class 'AssertionError'> ()
-[tau@sigma with_module]$ 
 ~~~
 
 Code commentaries get extracted from regions that are executed
