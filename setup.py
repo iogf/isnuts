@@ -2,7 +2,7 @@
 
 from distutils.core import setup
 setup(name="isnuts",
-      version="0.0.2",
+      version="0.0.3",
       py_modules=["nutslib"],
       author="Iury O. G. Figueiredo",
       author_email="ioliveira@id.uff.br",
@@ -11,6 +11,7 @@ setup(name="isnuts",
       keywords=['test', 'tdd', 'unittest'],
       classifiers=[],
       description="A naive approach to test python code.",)
+
 
 
 

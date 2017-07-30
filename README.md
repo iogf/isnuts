@@ -92,15 +92,9 @@ def beta(value):
 
 def alpha(value):
     # This case it will throw an assertion error.
-    # Because beta function doesnt raise ZeroDivisionError at all.
+    # Because beta function doesnt raise ZeroDivisionError if value==1.
 
-    #;try:
-    #;    beta(100)
-    #;except ZeroDivisionError:
-    #;    pass
-    #;else:
-    #;    raise Exception('Should throw ZeroDivisionError')
-    
+    #;assert_exc((ZeroDivisionError, ), beta, 0)
 
     return value 
 
@@ -114,9 +108,10 @@ You would get:
 ~~~
 [tau@sigma fail_exc_assertion]$ python tests.py 
 It will be printed when the module is loaded.
-File:/home/tau/projects/isnuts-code/demo/fail_exc_assertion/some_app.py
-Line:18
-Exception:<class 'Exception'> ('Should throw ZeroDivisionError',)
+File: /home/tau/projects/isnuts-code/demo/fail_exc_assertion/some_app.py
+Line: 12
+Exception: <class 'AssertionError'> ('Should throw', (<class 'ZeroDivisionError'>,))
+
 ~~~
 
 
@@ -176,5 +171,6 @@ Exception:<class 'AssertionError'> ()
 3
 
 ~~~
+
 
 
