@@ -122,6 +122,8 @@ Exception:<class 'Exception'> ('Should throw ZeroDivisionError',)
 
 This example shows how it would be with a class:
 
+### With classes
+
 **tests.py**
 
 ~~~python
