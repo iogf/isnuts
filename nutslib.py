@@ -1,7 +1,13 @@
+"""
+
+"""
+
 import linecache
 import sys
 
 class Parser:
+    """
+    """
     def get_tests(self, filename, line):
         code = ''
         while True:

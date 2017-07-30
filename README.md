@@ -5,7 +5,7 @@ A naive approach to test python code.
 The isnuts lib permits you to inject python code as inline commentaries
 for being executed later once the underlying application receives **--isnuts** argument.
 
-It permits to test the application behavior in a flexible way and less prolix
+It permit to test the application behavior in a flexible way and less prolix
 than writing tests in the standard approach.
 
 ### Basic code
@@ -83,18 +83,50 @@ if __name__ == '__main__':
 Once running the above example with:
 
 ~~~
-python myclass.py --isnuts
+[tau@sigma class_test]$ python some_class.py --isnuts
+File:some_class.py
+Line:12
+Exception:<class 'AssertionError'> ()
+3
+
+~~~
+
+The inline commentaries that start with #; before each statement get executed
+when the application is run with **--isnuts** argument.
+
+An example that tests if a method throws an exception would be:
+
+~~~python
+import nutslib
+
+def beta(value):
+    return 1/value
+
+def alpha(value):
+    # This case it will throw an assertion error.
+    # Because beta function doesnt raise ZeroDivisionError at all.
+
+    #;try:
+    #;    beta(100)
+    #;except ZeroDivisionError:
+    #;    pass
+    #;else:
+    #;    raise Exception('Should throw ZeroDivisionError')
+    
+
+    return value 
+
+alpha(10)
 
 ~~~
 
 You would get:
 
 ~~~
-[tau@sigma class_test]$ python some_class.py --isnuts
-File:some_class.py
-Line:12
-Exception:<class 'AssertionError'> ()
-3
+[tau@sigma fail_exc_assertion]$ python some_app.py --isnuts
+File:some_app.py
+Line:18
+Exception:<class 'Exception'> ('Should throw ZeroDivisionError',)
 
 ~~~
 
