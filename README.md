@@ -26,6 +26,9 @@ Other advantage of this approach consists of the fact of you having access to th
 it permits you to better test how functions behave since you can test function B from function A
 it would give you more power in predicting the behavior of the code.
 
+You can combine isnuts with other testing frameworks and better make sure
+your code works as well as helping you to better design your API!
+
 ### The isnuts approach to TDD
 
 The sequence below examplifies the approach:
