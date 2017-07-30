@@ -200,6 +200,8 @@ of others reading and understanding your code because the comment tests
 would give a clue about what you're doing. It as well would improve your prediction
 skills about how your code behaves with a given set of inputs.
 
+**Note:** It is in its early development stage, a lot can be done yet,
+looking for suggestions :)
 
 
 
