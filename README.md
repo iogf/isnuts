@@ -251,5 +251,43 @@ Exception:<class 'AssertionError'> ()
 
 ~~~
 
+### Regex assertion
 
+**tests.py**
+
+~~~python
+from nutslib import Tester
+tester = Tester()
+
+# Initialize the application.
+import some_app
+
+~~~
+
+**some_app.py**
+
+~~~python
+def alpha(value):
+    #;assert_regex('[a-z]+', alpha('abc'))
+    # It passes...
+    #;assert_not_regex('uue', alpha(''))
+
+    # This one would fail...
+    #;assert_regex('^[a-z]+$', alpha('UU'))
+
+    return 'uu' + value
+
+alpha('oo')
+
+~~~
+
+Runing:
+
+~~~
+[tau@sigma assert_regex]$ python tests.py 
+File: /home/tau/projects/isnuts-code/demo/assert_regex/some_app.py
+Line: 9
+Exception: <class 'AssertionError'> ('Should match: ^[a-z]+$ uuUU',)
+
+~~~
 
