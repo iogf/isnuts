@@ -5,7 +5,7 @@ A naive approach to test python code.
 The isnuts lib permits you to inject python code as inline commentaries these
 will be executed before each one of the statements it preceds.
 
-It permit to test the application behavior in a flexible way and less prolix
+It permit to test the application behavior in a flexible way
 than writing tests in the standard approach.
 
 In the actual approach for TDD tests one would follow the approach of writing tests
