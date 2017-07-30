@@ -1,6 +1,9 @@
 import linecache
 import sys
 
+def assert_exc():
+    pass
+
 class Parser:
     def get_tests(self, filename, line):
         code = ''
@@ -23,16 +26,12 @@ class Tester:
         self.parser = Parser()
         sys.settrace(self.trace_calls)
 
-    def exec_code(self, frame, globals, locals):
-        pass
-
     def trace_lines(self, frame, event, arg):
         if event != 'line': 
             return
 
         filename = frame.f_globals.get('__file__', 
         frame.f_globals.get('__name__'))
-        data = linecache.getline(filename,  frame.f_lineno)
 
         if not filename: return
 
@@ -43,21 +42,11 @@ class Tester:
         print('File:', frame.f_globals['__file__'])
         print('Line:', frame.f_lineno)
         exec(tests, frame.f_globals, frame.f_locals)
-        print('\n\n')
+        print()
 
     def trace_calls(self, frame, event, arg):
         return self.trace_lines
-        # module name
-        # print(frame.f_globals['__name__'])
-        # print(event)
-
-
-        # dict locals.
-        # if frame.f_locals:
-            # print(type(frame.f_locals))
 
 if '--isnuts' in sys.argv:
     tester = Tester()
-
-    
 
