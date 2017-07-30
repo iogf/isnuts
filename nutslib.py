@@ -1,6 +1,7 @@
 from os.path import abspath
 import linecache
 import sys
+import re
 
 def assert_exc(excpts, handle, *args, **kwargs):
     try:
@@ -10,6 +11,18 @@ def assert_exc(excpts, handle, *args, **kwargs):
     else:
         raise AssertionError(
             'Should throw', excpts)
+
+def assert_not_regex(regex, data):
+    matches = re.search(regex, data)
+    if matches:
+        raise AssertionError(
+           'Should not match: %s %s' % (regex, data))
+
+def assert_regex(regex, data):
+    matches = re.search(regex, data)
+    if not matches:
+        raise AssertionError(
+            'Should match: %s %s' % (regex, data))
 
 class Tester:
     """
@@ -28,8 +41,11 @@ class Tester:
     def exec_code(self, frame):
         tests = self.get_tests(abspath(
         frame.f_globals.get('__file__')), frame.f_lineno)
+        tests = ''.join(reversed(list(tests)))
 
-        frame.f_locals['assert_exc'] = assert_exc
+        frame.f_locals['assert_exc']   = assert_exc
+        frame.f_locals['assert_regex'] = assert_regex
+        frame.f_locals['assert_not_regex'] = assert_not_regex
 
         try:
             exec(tests, frame.f_globals, frame.f_locals)
@@ -40,16 +56,6 @@ class Tester:
         if event == 'line': 
             self.exec_code(frame)
         return self.trace_calls
-
-    def get_tests(self, filename, line):
-        code = ''
-
-        while True:
-            line = line - 1
-            data = self.get_code(filename, line)
-            if not data: 
-                return code
-            code = '%s%s' % (data, code)
 
     def get_code(self, filename, line):
         data = linecache.getline(filename,  line)
@@ -64,5 +70,12 @@ class Tester:
         elif data.strip().startswith('#'):
             return data
         return None
+
+    def get_tests(self, filename, line):
+        for ind in range(line - 1, -1, -1):
+            data = self.get_code(filename, ind)
+            if not data: 
+                break
+            yield data
 
 
