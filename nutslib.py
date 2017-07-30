@@ -22,6 +22,8 @@ class Parser:
         chks = data.split('#;')
         if len(chks) == 2:
             return chks[1]
+        elif not data:
+            return None
         elif not data.strip().rstrip():
             return '\n'
         elif data.strip().startswith('#'):

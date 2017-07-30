@@ -130,5 +130,78 @@ Exception:<class 'Exception'> ('Should throw ZeroDivisionError',)
 
 ~~~
 
+The following example shows how isnuts behaves with imports.
+
+**some_app.py**
+
+~~~python
+import nutslib
+import mymodule
+
+def alpha(value):
+    #;assert value == 1 or value == 2
+    return value 
+
+alpha(1)
+
+# Calling the function beta in mymodule
+# will run its local tests.
+mymodule.beta()
+
+
+~~~
+
+Which imports...
+
+**mymodule.py**
+
+~~~python
+# It will be executed when the module is loaded.
+#;print('In mymodule..')
+
+def gamma(value):
+    return value + 1
+
+# Testing gamma here..
+#;print('It will be printed when beta is called.')
+#;assert gamma(10) == 12
+
+# When the function beta gets called, isnuts lib
+# collects all test commentaries upwards.
+
+def beta():
+    # Will not pass in the tests.
+    #;assert gamma(10) == 12
+    pass
+
+~~~
+
+Which would output:
+
+~~~
+[tau@sigma with_module]$ python some_app.py --isnuts
+In mymodule..
+It will be printed when beta is called.
+File:/home/tau/projects/isnuts-code/demo/with_module/mymodule.py
+Line:14
+Exception:<class 'AssertionError'> ()
+File:/home/tau/projects/isnuts-code/demo/with_module/mymodule.py
+Line:17
+Exception:<class 'AssertionError'> ()
+[tau@sigma with_module]$ 
+~~~
+
+Code commentaries get extracted from regions that are executed
+in the application. Once extracted these are executed in the frame.f_globals
+and frame.f_locals.
+
+This approach of implementing tests would improve the ability
+of others reading and understanding your code because the comment tests
+would give a clue about what you're doing. It as well would improve your prediction
+skills about how your code behaves with a given set of inputs.
+
+
+
+
 
 
