@@ -46,6 +46,11 @@ class Tester:
     def trace_calls(self, frame, event, arg):
         return self.trace_lines
 
-if '--isnuts' in sys.argv:
-    tester = Tester()
+if __name__ != '__main__':
+    try:
+        sys.argv.remove('--isnuts')
+    except ValueError:
+        pass
+    else:
+        tester = Tester()
 
