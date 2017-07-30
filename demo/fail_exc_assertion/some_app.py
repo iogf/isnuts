@@ -5,19 +5,14 @@ def beta(value):
 
 def alpha(value):
     # This case it will throw an assertion error.
-    # Because beta function doesnt raise ZeroDivisionError at all.
+    # Because beta function doesnt raise ZeroDivisionError if value==1.
 
-    #;try:
-    #;    beta(100)
-    #;except ZeroDivisionError:
-    #;    pass
-    #;else:
-    #;    raise Exception('Should throw ZeroDivisionError')
-    
+    #;assert_exc((ZeroDivisionError, ), beta, 0)
 
     return value 
 
 alpha(10)
+
 
 
 

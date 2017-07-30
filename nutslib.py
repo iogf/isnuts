@@ -2,6 +2,15 @@ from os.path import abspath
 import linecache
 import sys
 
+def assert_exc(excpts, handle, *args, **kwargs):
+    try:
+        handle(*args, **kwargs)
+    except excpts as e:
+        pass
+    else:
+        raise AssertionError(
+            'Should throw', excpts)
+
 class Tester:
     """
     Used to keep track of function calls and execute
@@ -19,6 +28,8 @@ class Tester:
     def exec_code(self, frame):
         tests = self.get_tests(abspath(
         frame.f_globals.get('__file__')), frame.f_lineno)
+
+        frame.f_locals['assert_exc'] = assert_exc
 
         try:
             exec(tests, frame.f_globals, frame.f_locals)
@@ -53,4 +64,5 @@ class Tester:
         elif data.strip().startswith('#'):
             return data
         return None
+
 
