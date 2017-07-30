@@ -138,8 +138,6 @@ some_class.main()
 **some_class.py**
 
 ~~~python
-import nutslib
-
 class MyClass:
     def method0(self, value):
         # Notice you can test method1 from here too.
