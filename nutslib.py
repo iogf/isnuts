@@ -18,6 +18,8 @@ class Parser:
             return chks[1]
         elif not data.strip().rstrip():
             return '\n'
+        elif data.strip().startswith('#'):
+            return data
         return None
 
 class Tester:
@@ -25,23 +27,21 @@ class Tester:
         self.parser = Parser()
         sys.settrace(self.trace_calls)
 
-    def trace_lines(self, frame, event, arg):
-        if event != 'line': 
-            return
-
+    def exec_code(self, frame):
         filename = frame.f_globals.get('__file__', 
         frame.f_globals.get('__name__'))
+        tests = self.parser.get_tests(filename, frame.f_lineno)
 
-        if not filename: return
+        try:
+            exec(tests, frame.f_globals, frame.f_locals)
+        except Exception as err:
+            print('File:%s\nLine:%s\nException:%s %s' % (
+                filename, frame.f_lineno, 
+                    err.__class__, err.args))
 
-        tests = self.parser.get_tests(
-                filename, frame.f_lineno)
-
-        if not tests: return
-        print('File:', frame.f_globals['__file__'])
-        print('Line:', frame.f_lineno)
-        exec(tests, frame.f_globals, frame.f_locals)
-        print()
+    def trace_lines(self, frame, event, arg):
+        if event == 'line': 
+            self.exec_code(frame)
 
     def trace_calls(self, frame, event, arg):
         return self.trace_lines
