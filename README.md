@@ -8,7 +8,74 @@ will be executed before each one of the statements it preceds.
 It permit to test the application behavior in a flexible way and less prolix
 than writing tests in the standard approach.
 
+In the actual approach for TDD tests one would follow the approach of writing tests
+for each one of its functions then writing the functions to pass the tests. 
 
+It would be done in separate files, with isnuts approach it permits you to write your tests
+inside your functions as comments then go adding code to the functions to pass the tests.
+
+You would just need a file named tests.py that launches your
+application using isnuts lib.
+
+One of the advantages of isnuts is: if you have to refactor functions or rename them you can just 
+quickly change the function tests while you change the function! It would speed up development
+yet making your code more clear since the comments(which are merely python code) would help others
+to understand what you're doing.
+
+### The isnuts approach to TDD
+
+The sequence below examplifies the approach:
+
+You first need a tests.py file that will launch your application, but this one imports nutslib
+to execute your tests.
+
+**tests.py**
+
+~~~python
+from nutslib import Tester
+tester = Tester()
+
+# Just imports your application to be tested, here you can
+# decide to test your application entirely or just parts of it.
+# You could have more than one tests.py file which tests separately
+# parts of your code.
+import app
+~~~
+
+**app.py**
+
+~~~python
+def some_function(value0, value1, ...)
+    # These #; code comments will be executed when you run your tests.py file..
+    #;assert some_function(1, 2, 3, ..) == some_returned_value0
+    #;assert some_function(1, 4, 3, ..) == some_returned_value1
+    #;assert some_function(1, 2, 3, ..) == some_returned_value2
+
+~~~
+
+Now you have implemented your tests for your function, you can just
+start writing your code for the function and go checking if it passes your tests :)
+
+**app.py**
+
+~~~python
+def some_function(value0, value1, ...)
+    # These #; code comments will be executed when you run your tests.py file..
+    #;assert some_function(1, 2, 3, ..) == some_returned_value0
+    #;assert some_function(1, 4, 3, ..) == some_returned_value1
+    #;assert some_function(1, 2, 3, ..) == some_returned_value2
+    
+    # code...
+    return return_value
+~~~
+
+After that, you just run your **tests.py** file.
+
+~~~
+python tests.py
+~~~
+
+Then you would get information where your tests fail.
 
 ### Basic example
 
