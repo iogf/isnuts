@@ -1,9 +1,6 @@
 import linecache
 import sys
 
-def assert_exc():
-    pass
-
 class Parser:
     def get_tests(self, filename, line):
         code = ''
@@ -19,6 +16,8 @@ class Parser:
         chks = data.split('#;')
         if len(chks) == 2:
             return chks[1]
+        elif not data.strip().rstrip():
+            return '\n'
         return None
 
 class Tester:
