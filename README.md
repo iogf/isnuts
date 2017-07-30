@@ -19,8 +19,12 @@ application using isnuts lib.
 
 One of the advantages of isnuts is: if you have to refactor functions or rename them you can just 
 quickly change the function tests while you change the function! It would speed up development
-yet making your code more clear since the comments(which are merely python code) would help others
+yet making your more readable since the comments(which are merely python code) would help others
 to understand what you're doing.
+
+Other advantage of this approach consists of the fact of you having access to the function's scope
+it permits you to better test how functions behave since you can test function B from function A
+it would give you more power in predicting the behavior of the code.
 
 ### The isnuts approach to TDD
 
