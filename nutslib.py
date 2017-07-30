@@ -54,13 +54,10 @@ class Tester:
                 filename, frame.f_lineno, 
                     err.__class__, err.args))
 
-    def trace_lines(self, frame, event, arg):
+    def trace_calls(self, frame, event, arg):
         if event == 'line': 
             self.exec_code(frame)
-        return self.trace_lines
-
-    def trace_calls(self, frame, event, arg):
-        return self.trace_lines
+        return self.trace_calls
 
 if __name__ != '__main__':
     try:
