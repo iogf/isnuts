@@ -1,3 +1,4 @@
+from itertools import takewhile
 from os.path import abspath
 import linecache
 import sys
@@ -42,7 +43,6 @@ class Tester:
         tests = self.get_tests(abspath(
         frame.f_globals.get('__file__')), frame.f_lineno)
         tests = ''.join(reversed(list(tests)))
-
         frame.f_locals['assert_exc']   = assert_exc
         frame.f_locals['assert_regex'] = assert_regex
         frame.f_locals['assert_not_regex'] = assert_not_regex
@@ -57,10 +57,18 @@ class Tester:
             self.exec_code(frame)
         return self.trace_calls
 
-    def get_code(self, filename, line):
-        data = linecache.getline(filename,  line)
-        chks = data.split('#;')
+    def get_comments(self, filename, start, end=0):
+        inc = 1 if start < end else - 1
+        for ind in range(start, end, inc):
+            yield self.get_code(
+                linecache.getline(filename, ind))
 
+    def get_tests(self, filename, index):
+        code = self.get_comments(filename, index - 1)
+        return takewhile(lambda ind: ind, code)
+
+    def get_code(self, data):
+        chks = data.split('#;')
         if len(chks) == 2:
             return chks[1]
         elif not data:
@@ -70,12 +78,4 @@ class Tester:
         elif data.strip().startswith('#'):
             return data
         return None
-
-    def get_tests(self, filename, line):
-        for ind in range(line - 1, -1, -1):
-            data = self.get_code(filename, ind)
-            if not data: 
-                break
-            yield data
-
 

@@ -8,6 +8,8 @@ will be executed before each one of the statements it preceds.
 It permit to test the application behavior in a flexible way and less prolix
 than writing tests in the standard approach.
 
+
+
 ### Basic example
 
 First of all you implement a tests file which launches your application and imports
