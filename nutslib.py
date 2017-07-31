@@ -1,5 +1,6 @@
 from itertools import takewhile
 from os.path import abspath
+from textwrap import dedent
 import linecache
 import sys
 import re
@@ -42,7 +43,7 @@ class Tester:
     def exec_code(self, frame):
         tests = self.get_tests(abspath(
         frame.f_globals.get('__file__')), frame.f_lineno)
-        tests = ''.join(reversed(list(tests)))
+        tests = dedent(''.join(reversed(list(tests))))
         frame.f_locals['assert_exc']   = assert_exc
         frame.f_locals['assert_regex'] = assert_regex
         frame.f_locals['assert_not_regex'] = assert_not_regex
@@ -58,16 +59,29 @@ class Tester:
         return self.trace_calls
 
     def get_comments(self, filename, start, end=0):
+        """
+        Get all code comments from start to end.
+        """
+
         inc = 1 if start < end else - 1
         for ind in range(start, end, inc):
             yield self.get_code(
                 linecache.getline(filename, ind))
 
     def get_tests(self, filename, index):
+        """
+        Get tests between two python statements.
+        """
+
         code = self.get_comments(filename, index - 1)
         return takewhile(lambda ind: ind, code)
 
     def get_code(self, data):
+        """
+        Format a code comment, return either the code
+        or None or '\n' if it is an empty line.
+        """
+
         chks = data.split('#;')
         if len(chks) == 2:
             return chks[1]
@@ -76,6 +90,6 @@ class Tester:
         elif not data.strip().rstrip():
             return '\n'
         elif data.strip().startswith('#'):
-            return data
+            return '\n'
         return None
 

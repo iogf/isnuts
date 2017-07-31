@@ -5,17 +5,13 @@ def zeta(value):
 def delta():
     # Asserting zeta throws ZeroDivisionError..
 
-    #;try:
-    #;    zeta(0)
-    #;except ZeroDivisionError:
-    #;    pass
-
-    # It will print an exception and not pass in the test.
-    #;assert zeta(10) < 0
-    x = zeta(10)
+    #; assert_exc((ZeroDivisionError, ), zeta, 0)
+    #; print('It will be printed if it pass..')
+    x = 1
     return x + 1
 
 delta()
+
 
 
 

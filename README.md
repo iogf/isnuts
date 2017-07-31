@@ -56,10 +56,10 @@ app.some_function(1, 2, 3)
 
 ~~~python
 def some_function(value0, value1, ...)
-    # These #; code comments will be executed when you run your tests.py file..
-    #;assert some_function(1, 2, 3, ..) == some_returned_value0
-    #;assert some_function(1, 4, 3, ..) == some_returned_value1
-    #;assert some_function(1, 2, 3, ..) == some_returned_value2
+    # These #;  code comments will be executed when you run your tests.py file..
+    #; assert some_function(1, 2, 3, ..) == some_returned_value0
+    #; assert some_function(1, 4, 3, ..) == some_returned_value1
+    #; assert some_function(1, 2, 3, ..) == some_returned_value2
 
 ~~~
 
@@ -73,10 +73,10 @@ rewrite your function.
 
 ~~~python
 def some_function(value0, value1, ...)
-    # These #; code comments will be executed when you run your tests.py file..
-    #;assert some_function(1, 2, 3, ..) == some_returned_value0
-    #;assert some_function(1, 4, 3, ..) == some_returned_value1
-    #;assert some_function(1, 2, 3, ..) == some_returned_value2
+    # These #;  code comments will be executed when you run your tests.py file..
+    #; assert some_function(1, 2, 3, ..) == some_returned_value0
+    #; assert some_function(1, 4, 3, ..) == some_returned_value1
+    #; assert some_function(1, 2, 3, ..) == some_returned_value2
     
     # code...
     return return_value
@@ -119,14 +119,14 @@ def beta(value):
 
 def alpha(value):
     # Testing beta from alpha..
-    #;print('The alpha function got:', value)
-    #;assert beta(1) == 1
-    #;assert beta(2) == 1
-    #;assert beta('ooo') == 1
+    #; print('The alpha function got:', value)
+    #; assert beta(1) == 1
+    #; assert beta(2) == 1
+    #; assert beta('ooo') == 1
     n = beta(10) + 1
     
     # Justing checking n..
-    #;print('The value for n:', n)
+    #; print('The value for n:', n)
     return n
 
 alpha(10)
@@ -140,7 +140,7 @@ You want to test some_app.py then you run:
 python tests.py
 ~~~
 
-You'll get all statements that start with '#;' executed in the scope.
+You'll get all statements that start with '#; ' executed in the scope.
 
 ~~~
 [tau@sigma basic_assert]$ python tests.py 
@@ -167,7 +167,7 @@ import some_app
 **some_app.py**
 
 ~~~python
-#;print('It will be printed when the module is loaded.')
+#; print('It will be printed when the module is loaded.')
 
 def beta(value):
     return 1/value
@@ -176,7 +176,7 @@ def alpha(value):
     # This case it will throw an assertion error.
     # Because beta function doesnt raise ZeroDivisionError if value==1.
 
-    #;assert_exc((ZeroDivisionError, ), beta, 0)
+    #; assert_exc((ZeroDivisionError, ), beta, 0)
 
     return value 
 
@@ -220,10 +220,10 @@ class MyClass:
         # Notice you can test method1 from here too.
         # It wouldnt pass in the tests because
         # self.method1 returns always 2.
-        #;assert self.method1(10) == 3
+        #; assert self.method1(10) == 3
         
         # Just printing the value..
-        #;print('The value:', value)
+        #; print('The value:', value)
         return 1
 
     def method1(self, value):
@@ -233,9 +233,9 @@ def main():
     x = MyClass()
 
     # Testing method0 and method1 using x instance.
-    #;assert x.method0('uuuu') == 1
-    #;assert x.method1('oooooo') == 2
-    #;assert (x.method0('oo') + x.method1('oo')) == 3
+    #; assert x.method0('uuuu') == 1
+    #; assert x.method1('oooooo') == 2
+    #; assert (x.method0('oo') + x.method1('oo')) == 3
     print(x.method1(10) + x.method0(100))
 
 if __name__ == '__main__':
@@ -271,12 +271,12 @@ import some_app
 
 ~~~python
 def alpha(value):
-    #;assert_regex('[a-z]+', alpha('abc'))
+    #; assert_regex('[a-z]+', alpha('abc'))
     # It passes...
-    #;assert_not_regex('uue', alpha(''))
+    #; assert_not_regex('uue', alpha(''))
 
     # This one would fail...
-    #;assert_regex('^[a-z]+$', alpha('UU'))
+    #; assert_regex('^[a-z]+$', alpha('UU'))
 
     return 'uu' + value
 
